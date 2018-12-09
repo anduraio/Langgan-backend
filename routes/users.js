@@ -29,11 +29,11 @@ function verifyToken(req, res, next) {
 
 function cache(req, res, next) {
     const userId = req.userId;
-    client.hmget(userId, function (err, data) {
+    client.get(userId, function (err, data) {
         if (err) throw err;
 
         if (data != null) {
-            res.status(200).send({ status: 200, data: data });
+            res.status(200).send({ status: 200, data: JSON.parse(data) });
         } else {
             next();
         }
