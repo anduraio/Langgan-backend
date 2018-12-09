@@ -79,7 +79,7 @@ exports.profile =  function(req, res, next) {
   User.findById(req.userId, { password: 0 }, function (err, user) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding the user." });
     if (!user) return res.status(404).send({ status: 404, message: "No user found." });
-    client.setex(userId, 3600, user);
+    client.setex(userId, 3600, JSON.stringify(user));
     res.status(200).send({ status: 200, data: user });
   });
 
