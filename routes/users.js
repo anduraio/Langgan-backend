@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var client = require('redis').createClient(process.env.REDIS_URL);
 /**
  * Configure JWT
  */
@@ -27,25 +26,12 @@ function verifyToken(req, res, next) {
 
 }
 
-function cache(req, res, next) {
-    const userId = req.userId;
-    client.get(userId, function (err, data) {
-        if (err) throw err;
-
-        if (data != null) {
-            res.status(200).send({ status: 200, data: JSON.parse(data) });
-        } else {
-            next();
-        }
-    });
-}
-
 router.post('/register', user.register);
 
 router.post('/login', user.login);
 
 router.get('/logout', user.logout);
 
-router.get('/profile', verifyToken, cache, user.profile);
+router.get('/profile', verifyToken, user.profile);
 
 module.exports = router;
