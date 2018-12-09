@@ -29,7 +29,7 @@ function verifyToken(req, res, next) {
 
 function cache(req, res, next) {
     const userId = req.userId;
-    client.hgetall(userId, function (err, data) {
+    client.hmget(userId, function (err, data) {
         if (err) throw err;
 
         if (data != null) {
