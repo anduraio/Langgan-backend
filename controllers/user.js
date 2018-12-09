@@ -7,6 +7,7 @@ const {
 } = require('express-validator/filter');
 const bcrypt = require('bcryptjs');
 var async = require('async');
+var client = require('redis').createClient(process.env.REDIS_URL);
 
 /**
  * Configure JWT
@@ -74,9 +75,11 @@ exports.logout = function(req, res) {
 
 // VIEW USER PROFILE
 exports.profile =  function(req, res, next) {
+  const userId = req.userId;
   User.findById(req.userId, { password: 0 }, function (err, user) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding the user." });
     if (!user) return res.status(404).send({ status: 404, message: "No user found." });
+    client.setex(userId, 3600, repoLength);
     res.status(200).send({ status: 200, data: user });
   });
 
