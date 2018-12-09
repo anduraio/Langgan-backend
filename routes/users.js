@@ -46,6 +46,6 @@ router.post('/login', user.login);
 
 router.get('/logout', user.logout);
 
-router.get('/profile', cache, verifyToken, user.profile);
+router.get('/profile', verifyToken, cache, user.profile);
 
 module.exports = router;
