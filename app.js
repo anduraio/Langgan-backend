@@ -5,7 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 const database = require('./config/database');
-var client = require('redis').createClient(process.env.REDIS_URL);
 
 var index = require('./routes/index');
 var users = require('./routes/users');
