@@ -28,6 +28,14 @@ function verifyToken(req, res, next) {
 
 router.post('/new', verifyToken, store.create_post);
 
+router.post('/post', verifyToken, store.post);
+
 router.get('/', verifyToken, store.list);
+
+router.get('/:id', verifyToken, store.store_detail);
+
+router.delete('/:id', verifyToken, store.store_delete);
+
+router.put('/:id', verifyToken, store.store_update);
 
 module.exports = router;
