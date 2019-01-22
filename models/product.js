@@ -3,8 +3,13 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var ProductSchema = new Schema({
-    user_id: {type: Schema.ObjectId, ref: 'User', required: true},
+    store_id: {type: Schema.ObjectId, ref: 'Store', required: true},
     name: {type: String, required: true, max: 50},
+    category_id: {type: Number, required: false},
+    category_name: {type: String, required: false},
+    brand: {type: String, required: false},
+    barcode: {type: String, required: false},
+    sku: {type: String, required: false},
     description: {type: String, required: true, max: 50},
     price: {type: Number, required: false},
     created_at: {type: Date},
