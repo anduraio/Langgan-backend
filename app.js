@@ -14,6 +14,7 @@ var boxes = require('./routes/box');
 var subs = require('./routes/subscription');
 var reviews = require('./routes/review');
 var favorites = require('./routes/favorite');
+var categories = require('./routes/category');
 
 
 var app = express();
@@ -54,6 +55,7 @@ app.use('/api/box', boxes);
 app.use('/api/subs', subs);
 app.use('/api/review', reviews);
 app.use('/api/favorite', favorites);
+app.use('/api/category', categories);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
