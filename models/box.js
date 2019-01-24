@@ -2,6 +2,8 @@ var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema;
 
+// test git
+
 var BoxSchema = new Schema({
     store_id: {type: Schema.ObjectId, ref: 'Store', required: true},
     name: {type: String, required: true, max: 50},
