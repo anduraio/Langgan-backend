@@ -12,6 +12,7 @@ var stores = require('./routes/store');
 var products = require('./routes/product');
 var boxes = require('./routes/box');
 var subs = require('./routes/subscription');
+var reviews = require('./routes/review');
 
 
 var app = express();
@@ -50,6 +51,7 @@ app.use('/api/store', stores);
 app.use('/api/product', products);
 app.use('/api/box', boxes);
 app.use('/api/subs', subs);
+app.use('/api/review', reviews);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
