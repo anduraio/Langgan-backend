@@ -36,7 +36,7 @@ exports.create_post = function(req, res) {
 
     res.status(200).send({
       status: 200,
-      store: data
+      product: data
     });
   });
 };
@@ -46,5 +46,40 @@ exports.list = function(req, res, next) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of products." });
     if (!data) return res.status(404).send({ status: 404, message: "No product found." });
     res.status(200).send({ status: 200, data: data });
+  })
+}
+
+exports.product_detail = function(req, res, next) {
+  Product.findById(req.params.id, function(err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding product." });
+    if (!data) return res.status(404).send({ status: 404, message: "No product found." });
+    res.status(200).send({ status: 200, data: data });
+  })
+}
+
+exports.product_delete = function(req, res, next) {
+  Product.findByIdAndRemove(req.params.id, function(err) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem to delete a product." });
+    res.status(200).send({ status: 200, message: "product was deleted" });
+  })
+}
+
+exports.product_update = function(req, res, next) {
+  var product = new Product({
+    store_id : req.body.store_id,
+    name: req.body.name,
+    category_id: req.body.category_id,
+    category_name: req.body.category_name,
+    brand: req.body.brand,
+    barcode: req.body.barcode,
+    sku: req.body.sku,
+    description: req.body.description,
+    price: req.body.price,
+    _id: req.params.id
+  });
+
+  Product.findByIdAndUpdate(req.params.id, product, {}, function(err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem to update product." });
+    res.status(200).send({ status: 200, data: product });
   })
 }
