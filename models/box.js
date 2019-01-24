@@ -6,7 +6,7 @@ var BoxSchema = new Schema({
     store_id: {type: Schema.ObjectId, ref: 'Store', required: true},
     name: {type: String, required: true, max: 50},
     description: {type: String, required: true, max: 50},
-    price: {type: Number, required: true, max: 50},
+    price: {type: Number, required: true},
     products: [{ type: Schema.ObjectId, ref: 'Product' }],
     created_at: {type: Date},
     updated_at: {type: Date, default: Date.now}
