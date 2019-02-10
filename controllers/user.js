@@ -61,7 +61,7 @@ exports.login = function(req, res) {
     });
 
     // return the information including token as JSON
-    res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn });
+    res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn, data: user });
   });
 };
 
