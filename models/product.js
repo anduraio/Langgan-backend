@@ -7,6 +7,7 @@ var ProductSchema = new Schema({
     name: {type: String, required: true, max: 50},
     category_id: {type: Number, required: false},
     category_name: {type: String, required: false},
+    photo: {type: String, required: false},
     brand: {type: String, required: false},
     barcode: {type: String, required: false},
     sku: {type: String, required: false},

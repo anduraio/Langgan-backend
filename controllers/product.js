@@ -19,6 +19,7 @@ exports.create_post = function(req, res) {
     store_id : req.body.store_id,
     name: req.body.name,
     description: req.body.description,
+    photo: req.body.photo,
     category_id: req.body.category_id,
     category_name: req.body.category_name,
     brand: req.body.brand,
@@ -68,6 +69,7 @@ exports.product_update = function(req, res, next) {
   var product = new Product({
     store_id : req.body.store_id,
     name: req.body.name,
+    photo: req.body.photo,
     category_id: req.body.category_id,
     category_name: req.body.category_name,
     brand: req.body.brand,
