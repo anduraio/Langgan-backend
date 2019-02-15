@@ -32,7 +32,10 @@ exports.create = function(req, res) {
 };
 
 exports.list = function(req, res, next) {
-  Favorite.find({}, function (err, data) {
+  Favorite
+    .find({}),
+    .populate('product')
+    .exec(function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of favorite." });
     if (!data) return res.status(404).send({ status: 404, message: "No favorite found." });
     res.status(200).send({ status: 200, data: data });
