@@ -15,7 +15,7 @@ var Favorite = require('../models/favorite');
 exports.create = function(req, res) {
   Favorite.create({
     user_id : req.userId,
-    product_id: req.body.product_id,
+    product: req.body.product_id,
     created_at: Date.now()
   },
   function (err, data) {
@@ -33,7 +33,7 @@ exports.create = function(req, res) {
 
 exports.list = function(req, res, next) {
   Favorite
-    .find({}),
+    .find({})
     .populate('product')
     .exec(function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of favorite." });
@@ -43,7 +43,9 @@ exports.list = function(req, res, next) {
 }
 
 exports.detail = function(req, res, next) {
-	Favorite.findById(req.params.id)
+	Favorite
+    .findById(req.params.id)
+    .populate('product')
 		.exec(function (err, data) {
 	      if (err) return res.status(500).send({ status: 500, message: "There was a problem finding favorite." });
 	      if (!data) return res.status(404).send({ status: 404, message: "No favorite found." });
@@ -62,7 +64,7 @@ exports.delete = function(req, res, next) {
 exports.update = function(req, res, next) {
   var favorite = new Favorite({
     user_id : req.userId,
-    product_id: req.body.product_id,
+    product: req.body.product_id,
     rate: req.body.rate,
     _id: req.params.id
   });
