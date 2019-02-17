@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var SubscriptionSchema = new Schema({
     store_id: {type: Schema.ObjectId, ref: 'Store', required: true},
     user_id: {type: Schema.ObjectId, ref: 'User', required: true},
+    plan: [{ type: Schema.ObjectId, ref: 'Box', required: true }],
     address: {type: String, required: false},
     city: {type: String, required: false},
     state: {type: String, required: false},

@@ -11,11 +11,22 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config'); // get config file
 
 var Subs = require('../models/subscription');
+var Product = require('../models/product');
 
 exports.create = function(req, res) {
+  if(!(req.body.plan instanceof Array)){
+    if(typeof req.body.plan==='undefined') {
+      req.body.plan=[];
+    }
+    else {
+      req.body.plan=new Array(req.body.plan);
+    }
+  }
+
   Subs.create({
     store_id: req.body.store_id,
     user_id: req.userId,
+    plan: req.body.plan,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
@@ -37,9 +48,20 @@ exports.create = function(req, res) {
 };
 
 exports.list = function(req, res, next) {
-  Subs.find({}, function (err, data) {
+  Subs.find({})
+    .populate('plan')
+    .exec(function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of subscription." });
     if (!data) return res.status(404).send({ status: 404, message: "No subscription found." });
+    
+    /*async.forEach(data,function(item,callback) {
+        Product.find({}).populate(item.plan,{ "path": "products" },function(err,output) {
+            if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of products." });
+        });
+    }, function(err) {
+        res.status(200).send({ status: 200, data: data });
+    });*/
+
     res.status(200).send({ status: 200, data: data });
   })
 }
