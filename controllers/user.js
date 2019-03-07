@@ -17,6 +17,14 @@ var config = require('../config'); // get config file
 var User = require('../models/user');
 var Store = require('../models/store');
 
+exports.list = function(req, res, next) {
+  User.find({}, function (err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of user." });
+    if (!data) return res.status(404).send({ status: 404, message: "No user found." });
+    res.status(200).send({ status: 200, data: data });
+  })
+}
+
 // CREATES A NEW USER
 exports.register = function(req, res) {
 
@@ -26,7 +34,8 @@ exports.register = function(req, res) {
     first_name : req.body.first_name,
     last_name : req.body.last_name,
     email : req.body.email,
-    password : hashedPassword
+    password : hashedPassword,
+    created_at: Date.now()
   },
   function (err, user) {
     if (err) return res.status(500).send("There was a problem registering the user." );
@@ -52,7 +61,8 @@ exports.register_owner = function(req, res) {
     first_name : req.body.first_name,
     last_name : req.body.last_name,
     email : req.body.email,
-    password : hashedPassword
+    password : hashedPassword,
+    created_at: Date.now()
   },
   function (err, user) {
     if (err) return res.status(500).send("There was a problem registering the user." + err);
@@ -125,3 +135,11 @@ exports.profile =  function(req, res, next) {
   });
 
 };
+
+// DELETE USER
+exports.user_delete = function(req, res, next) {
+  User.findByIdAndRemove(req.params.id, function(err) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem to delete a user." });
+    res.status(200).send({ status: 200, message: "user was deleted" });
+  })
+}

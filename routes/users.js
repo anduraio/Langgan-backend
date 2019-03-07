@@ -30,10 +30,14 @@ router.post('/register', user.register);
 
 router.post('/registerowner', user.register_owner);
 
+router.get('/', verifyToken, user.list);
+
 router.post('/login', user.login);
 
 router.get('/logout', user.logout);
 
 router.get('/profile', verifyToken, user.profile);
+
+router.delete('/:id', verifyToken, user.user_delete);
 
 module.exports = router;
