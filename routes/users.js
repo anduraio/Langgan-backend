@@ -28,6 +28,8 @@ function verifyToken(req, res, next) {
 
 router.post('/register', user.register);
 
+router.post('/registerowner', user.register_owner);
+
 router.post('/login', user.login);
 
 router.get('/logout', user.logout);

@@ -15,6 +15,7 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config'); // get config file
 
 var User = require('../models/user');
+var Store = require('../models/store');
 
 // CREATES A NEW USER
 exports.register = function(req, res) {
@@ -28,7 +29,7 @@ exports.register = function(req, res) {
     password : hashedPassword
   },
   function (err, user) {
-    if (err) return res.status(500).send("There was a problem registering the user`.");
+    if (err) return res.status(500).send("There was a problem registering the user." );
 
     // if user is registered without errors
     // create a token
@@ -38,6 +39,49 @@ exports.register = function(req, res) {
     });
 
     res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn });
+  });
+};
+
+
+// CREATES A NEW OWNER
+exports.register_owner = function(req, res) {
+
+  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+
+  User.create({
+    first_name : req.body.first_name,
+    last_name : req.body.last_name,
+    email : req.body.email,
+    password : hashedPassword
+  },
+  function (err, user) {
+    if (err) return res.status(500).send("There was a problem registering the user." + err);
+
+    // if user is registered without errors
+    // create a token
+    let expiresIn = 86400;
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: expiresIn // expires in 24 hours
+    });
+
+    Store.create({
+      user_id: user._id,
+      name: req.body.name,
+      description: "",
+      email: req.body.email,
+      phone: "",
+      address: "",
+      city: "",
+      state: "",
+      country: "",
+      created_at: Date.now()
+    }, function (err, store) {
+      if (err) return res.status(500).send("There was a problem registering the store`.");
+
+      res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn, user: user, store: store });
+    })
+
+    //res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn });
   });
 };
 
