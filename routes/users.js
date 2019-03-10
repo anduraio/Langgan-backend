@@ -34,6 +34,8 @@ router.get('/', verifyToken, user.list);
 
 router.post('/login', user.login);
 
+router.post('/loginowner', user.login_owner);
+
 router.get('/logout', user.logout);
 
 router.get('/profile', verifyToken, user.profile);

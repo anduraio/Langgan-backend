@@ -34,6 +34,8 @@ router.get('/', verifyToken, store.list);
 
 router.get('/:id', verifyToken, store.store_detail);
 
+router.get('/mystore/:id', verifyToken, store.my_store);
+
 router.delete('/:id', verifyToken, store.store_delete);
 
 router.put('/:id', verifyToken, store.store_update);

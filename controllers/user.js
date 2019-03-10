@@ -95,6 +95,35 @@ exports.register_owner = function(req, res) {
   });
 };
 
+// LOGIN OWNER
+exports.login_owner = function(req, res) {
+
+  User.findOne({ email: req.body.email }, function (err, user) {
+    if (err) return res.status(500).send('Error on the server.');
+    if (!user) return res.status(404).send('No user found.');
+
+    // check if the password is valid
+    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+    if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+
+    // if user is found and password is valid
+    // create a token
+    let expiresIn = 86400;
+    var token = jwt.sign({ id: user._id }, config.secret, {
+      expiresIn: expiresIn // expires in 24 hours
+    });
+
+    Store.find({ user_id: user._id }, function(err, stores) {
+      if (err) return res.status(500).send({ status: 500, message: "There was a problem finding stores." });
+      if (!stores) return res.status(404).send({ status: 404, message: "No stores found." });
+      res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn, user: user, store: stores });
+    })
+
+    // return the information including token as JSON
+    //res.status(200).send({ status: 200, auth: true, token: token, expiresIn: expiresIn, data: user });
+  });
+};
+
 
 // LOGIN
 exports.login = function(req, res) {

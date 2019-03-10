@@ -76,6 +76,14 @@ exports.store_detail = function(req, res, next) {
   })
 }
 
+exports.my_store = function(req, res, next) {
+  Store.find({ user_id: req.params.id }, function(err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding store." });
+    if (!data) return res.status(404).send({ status: 404, message: "No store found." });
+    res.status(200).send({ status: 200, data: data });
+  })
+}
+
 exports.store_delete = function(req, res, next) {
   Store.findByIdAndRemove(req.params.id, function(err) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem to delete a store." });
