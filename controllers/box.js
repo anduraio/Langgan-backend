@@ -113,6 +113,14 @@ exports.list = function(req, res, next) {
   })
 }
 
+exports.list_boxes = function(req, res, next) {
+  Box.find({store_id: req.params.id}, function (err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of boxes." });
+    if (!data) return res.status(404).send({ status: 404, message: "No boxes found." });
+    res.status(200).send({ status: 200, data: data });
+  })
+}
+
 exports.detail = function(req, res, next) {
 	Box.findById(req.params.id)
 		.populate('products')

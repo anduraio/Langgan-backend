@@ -30,6 +30,8 @@ router.post('/new', verifyToken, box.create_post);
 
 router.get('/', verifyToken, box.list);
 
+router.get('/list/:id', verifyToken, box.list_boxes);
+
 router.get('/:id', verifyToken, box.detail);
 
 router.delete('/:id', verifyToken, box.delete);
