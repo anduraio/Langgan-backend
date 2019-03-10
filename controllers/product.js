@@ -43,7 +43,15 @@ exports.create_post = function(req, res) {
 };
 
 exports.list = function(req, res, next) {
-  Product.find(function (err, data) {
+  Product.find({}, function (err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of products." });
+    if (!data) return res.status(404).send({ status: 404, message: "No product found." });
+    res.status(200).send({ status: 200, data: data });
+  })
+}
+
+exports.list_products = function(req, res, next) {
+  Product.find({store_id: req.params.id}, function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of products." });
     if (!data) return res.status(404).send({ status: 404, message: "No product found." });
     res.status(200).send({ status: 200, data: data });

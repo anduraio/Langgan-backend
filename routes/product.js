@@ -30,6 +30,8 @@ router.post('/new', verifyToken, product.create_post);
 
 router.get('/', verifyToken, product.list);
 
+router.get('/list/:id', verifyToken, product.list_products);
+
 router.get('/:id', verifyToken, product.product_detail);
 
 router.delete('/:id', verifyToken, product.product_delete);
