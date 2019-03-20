@@ -12,6 +12,7 @@ var ProductSchema = new Schema({
     sku: {type: String, required: false},
     description: {type: String, required: true, max: 50},
     price: {type: Number, required: false},
+    photo: {type: String, required: false},
     created_at: {type: Date},
     updated_at: {type: Date, default: Date.now}
 });
