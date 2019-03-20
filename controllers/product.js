@@ -16,7 +16,6 @@ var Product = require('../models/product');
 
 exports.create_post = function(req, res) {
   var photo = "https://i1.wp.com/thefrontline.org.uk/wp-content/uploads/2018/10/placeholder.jpg";
-  console.log("create new product")
   Product.create({
     store_id : req.body.store_id,
     name: req.body.name,
@@ -43,6 +42,14 @@ exports.create_post = function(req, res) {
     });
   });
 };
+
+exports.new_post = function(req, res, next) {
+  console.log("body " + req.body.satu);
+  console.log("file " + req.files);
+  var data = req.body.satu;
+  var file = req.files;
+  res.status(200).send({ status: 200, data: data, file: file});
+}
 
 exports.list = function(req, res, next) {
   Product.find(function (err, data) {
