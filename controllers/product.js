@@ -16,6 +16,7 @@ var Product = require('../models/product');
 
 exports.create_post = function(req, res) {
   var photo = "https://i1.wp.com/thefrontline.org.uk/wp-content/uploads/2018/10/placeholder.jpg";
+  console.log("price " + req.body.price)
   Product.create({
     store_id : req.body.store_id,
     name: req.body.name,
