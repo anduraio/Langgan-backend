@@ -156,13 +156,28 @@ exports.logout = function(req, res) {
 
 
 // VIEW USER PROFILE
-exports.profile =  function(req, res, next) {
+/*exports.profile =  function(req, res, next) {
   User.findById(req.userId, { password: 0 }, function (err, user) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding the user." });
     if (!user) return res.status(404).send({ status: 404, message: "No user found." });
     res.status(200).send({ status: 200, data: user });
   });
 
+};*/
+exports.profile =  function(req, res, next) {
+  async.parallel({
+    user: function(callback) {
+      User.findById(req.userId).exec(callback);
+    },
+    stores: function(callback) {
+      Store.find({ user_id: req.userId }).exec(callback);
+    },
+  }, function(err, results) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding the user." });
+    if (!results.user) return res.status(404).send({ status: 404, message: "No user found." });
+    res.status(200).send({ status: 200, data: results.user, stores: results.stores });
+
+  });
 };
 
 // DELETE USER

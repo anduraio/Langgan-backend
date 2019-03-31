@@ -76,29 +76,29 @@ exports.box_create_post = [
             // There are errors. Render form again with sanitized values/error messages.
 
             return res.status(500).send({
-		      message: "There was a problem create a new box.",
-		      error: err
-		    });
+    		      message: "There was a problem create a new box.",
+    		      error: err
+    		    });
         }
         else {
-            Box.create({
-			    store_id : req.body.store_id,
-			    name: req.body.name,
-			    description: req.body.description,
-			    price: req.body.price,
-			    created_at: Date.now()
-			},
-			function (err, data) {
-			    if (err) return res.status(500).send({
-			      message: "There was a problem create a new box.",
-			      error: err
-			    });
+          Box.create({
+    			    store_id : req.body.store_id,
+    			    name: req.body.name,
+    			    description: req.body.description,
+    			    price: req.body.price,
+    			    created_at: Date.now()
+    			},
+    			function (err, data) {
+    			    if (err) return res.status(500).send({
+    			      message: "There was a problem create a new box.",
+    			      error: err
+    			    });
 
-			    res.status(200).send({
-			      status: 200,
-			      product: data
-			    });
-			});
+    			    res.status(200).send({
+    			      status: 200,
+    			      product: data
+    			    });
+    			});
         }
     }
 ];
