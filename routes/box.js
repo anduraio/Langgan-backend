@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+var multer  = require('multer')
+// text format
+var textForm = multer()
+// file format
+var uploadForm = multer({ dest: 'uploads/' })
 /**
  * Configure JWT
  */
@@ -26,7 +31,7 @@ function verifyToken(req, res, next) {
 
 }
 
-router.post('/new', verifyToken, box.create_post);
+router.post('/new', verifyToken, textForm.none(), box.create_post);
 
 router.get('/', verifyToken, box.list);
 
