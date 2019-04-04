@@ -27,11 +27,14 @@ exports.create = function(req, res) {
     store_id: req.body.store_id,
     user_id: req.userId,
     plan: req.body.plan,
+    lat: req.body.lat,
+    lon: req.body.lon,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
     country: req.body.country,
     delivery: req.body.delivery,
+    status: req.body.status,
     created_at: Date.now()
   },
   function (err, data) {
@@ -71,6 +74,7 @@ exports.list = function(req, res, next) {
 exports.list_by_store = function(req, res, next) {
   Subs.find({store_id: req.params.id})
     .populate('plan')
+    .populate('user_id')
     .exec(function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of subscription." });
     if (!data) return res.status(404).send({ status: 404, message: "No subscription found." });
@@ -110,11 +114,15 @@ exports.update = function(req, res, next) {
   var subscription = new Subs({
     store_id: req.body.store_id,
     user_id: req.body.user_id,
+    plan: req.body.plan,
+    lat: req.body.lat,
+    lon: req.body.lon,
     address: req.body.address,
     city: req.body.city,
     state: req.body.state,
     country: req.body.country,
     delivery: req.body.delivery,
+    status: req.body.status,
     _id: req.params.id
   });
 

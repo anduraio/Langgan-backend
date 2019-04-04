@@ -13,7 +13,17 @@ var ProductSchema = new Schema({
     sku: {type: String, required: false},
     description: {type: String, required: true, max: 50},
     price: {type: Number, required: false},
+    special_price: {type: Number, required: false},
+    discount: {type: Number, required: false},
+    rating: {type: Number, required: false},
+    reviews: [{ type: Schema.ObjectId, ref: 'Review' }],
+    stock: {type: Number, required: false},
+    sold: {type: Number, required: false},
+    viewed: {type: Number, required: false},
+    liked: {type: Number, required: false},
     photo: {type: String, required: false},
+    notes: {type: String, required: false},
+    type: {type: String, required: false},
     created_at: {type: Date},
     updated_at: {type: Date, default: Date.now}
 });
