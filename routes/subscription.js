@@ -30,6 +30,8 @@ router.post('/new', verifyToken, subs.create);
 
 router.get('/', verifyToken, subs.list);
 
+router.get('/store/:id', verifyToken, subs.list_by_store);
+
 router.get('/:id', verifyToken, subs.detail);
 
 router.delete('/:id', verifyToken, subs.delete);

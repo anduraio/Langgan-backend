@@ -68,6 +68,27 @@ exports.list = function(req, res, next) {
   })
 }   
 
+exports.list_by_store = function(req, res, next) {
+  Subs.find({store_id: req.params.id})
+    .populate('plan')
+    .exec(function (err, data) {
+    if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of subscription." });
+    if (!data) return res.status(404).send({ status: 404, message: "No subscription found." });
+    
+    async.forEach(data,function(item,callback) {
+        Product.populate(item.plan,{ "path": "products" },function(err,output) {
+            if (err) throw err;
+            callback();
+        });
+    }, function(err) {
+        if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of products." });
+        res.status(200).send({ status: 200, data: data });
+    });
+
+    //res.status(200).send({ status: 200, data: array });
+  })
+} 
+
 exports.detail = function(req, res, next) {
 	Subs.findById(req.params.id)
 		.exec(function (err, data) {
