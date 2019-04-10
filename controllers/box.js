@@ -11,6 +11,8 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config'); // get config file
 
 var Box = require('../models/box');
+var Item = require('../models/item');
+var Product = require('../models/product');
 
 var async = require('async');
 
@@ -35,6 +37,70 @@ exports.create_post = function(req, res) {
     });
   });
 };
+
+exports.create_post_new = [
+  (req, res, next) => {
+      if(!(req.body.products instanceof Array)){
+          if(typeof req.body.products==='undefined') {
+            console.log("new box undefined")
+            req.body.products=[];
+          }
+          else {
+            console.log("new box defined")
+            req.body.products=new Array(req.body.products);
+          }
+      }
+      next();
+  },
+  (req, res, next) => {
+
+    var items = []
+
+    async.forEachOf(req.body.products, function (value, key, callback) {
+        Item.create({
+          product: value,
+          qty: req.body.qty[key],
+          sub_total_price: req.body.sub_total_price[key],
+          created_at: Date.now()
+        },
+        function (err, data) {
+
+          console.log("error item " + err)
+          console.log("id item " + data._id)
+          items.push(data._id)
+          callback();
+
+        });
+    }, function (err) {
+        if (err) return res.status(500).send({
+          message: "There was a problem create box item.",
+          error: err
+        });
+
+        console.log("items " + items.length)
+
+        Box.create({
+          name: req.body.name,
+          store_id: req.body.store_id,
+          description: req.body.description,
+          price: req.body.price,
+          items: items,
+          created_at: Date.now()
+        },
+        function (err, data) {
+          if (err) return res.status(500).send({
+            message: "There was a problem create a new box.",
+            error: err
+          });
+
+          res.status(200).send({
+            status: 200,
+            data: data
+          });
+        });
+    });
+  }
+];
 
 exports.box_create_post = [
     // Convert the products to an array.
@@ -105,11 +171,25 @@ exports.box_create_post = [
 
 exports.list = function(req, res, next) {
   Box.find({})
-  	.populate('products')
+    .populate('items')
   	.exec(function (err, data) {
     if (err) return res.status(500).send({ status: 500, message: "There was a problem finding list of box." });
     if (!data) return res.status(404).send({ status: 404, message: "No box found." });
-    res.status(200).send({ status: 200, data: data });
+    
+    if (data.length == 0) return res.status(200).send({ status: 200, data: data });
+
+    async.forEach(data,function(item,callback) {
+        Product
+        .populate(item.items,{ "path": "product" },function(err,output) {
+            if (err) console.log("error " + err);
+            callback();
+        });
+    }, function(err) {
+        if (err) return res.status(500).send({ status: 500, message: "There was a problem finding a product." });
+        res.status(200).send({ status: 200, data: data });
+    });
+
+    // res.status(200).send({ status: 200, data: data });
   })
 }
 

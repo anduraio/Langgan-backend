@@ -31,7 +31,7 @@ function verifyToken(req, res, next) {
 
 }
 
-router.post('/new', verifyToken, textForm.none(), box.create_post);
+router.post('/new', verifyToken, textForm.none(), box.create_post_new);
 
 router.get('/', verifyToken, box.list);
 
