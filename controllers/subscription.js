@@ -12,6 +12,7 @@ var config = require('../config'); // get config file
 
 var Subs = require('../models/subscription');
 var Product = require('../models/product');
+var Item = require('../models/item');
 
 exports.create = function(req, res) {
   if(!(req.body.plan instanceof Array)){
@@ -35,6 +36,7 @@ exports.create = function(req, res) {
     country: req.body.country,
     delivery: req.body.delivery,
     status: req.body.status,
+    total_price: req.body.total_price,
     created_at: Date.now()
   },
   function (err, data) {
@@ -58,7 +60,8 @@ exports.list = function(req, res, next) {
     if (!data) return res.status(404).send({ status: 404, message: "No subscription found." });
     
     async.forEach(data,function(item,callback) {
-        Product.populate(item.plan,{ "path": "products" },function(err,output) {
+        console.log("populate Items")
+        Item.populate(item.plan,{ "path": "items", populate: { path: 'product', model: 'Product' }},function(err,output) {
             if (err) throw err;
             callback();
         });
