@@ -15,14 +15,15 @@ var subs = require('./routes/subscription');
 var reviews = require('./routes/review');
 var favorites = require('./routes/favorite');
 var categories = require('./routes/category');
+var customers = require('./routes/customer');
 
 
 var app = express();
 
 // Set up mongoose connection
 var mongoose = require('mongoose');
-mongoose.connect(process.env.MONGODB_URI || database.database);
-//mongoose.connect(database.database);
+//mongoose.connect(process.env.MONGODB_URI || database.database);
+mongoose.connect(process.env.MONGODB_URI || database.localDatabase);
 let db = mongoose.connection;
 
 // Check connection
@@ -56,6 +57,7 @@ app.use('/api/subs', subs);
 app.use('/api/review', reviews);
 app.use('/api/favorite', favorites);
 app.use('/api/category', categories);
+app.use('/api/customer', customers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
