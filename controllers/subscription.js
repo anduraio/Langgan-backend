@@ -41,7 +41,7 @@ exports.create = function(req, res) {
   },
   function (err, data) {
     if (err) return res.status(500).send({
-      message: "There was a problem add a new subscription.",
+      message: "There was a problem add a new subscriptions.",
       error: err
     });
 
