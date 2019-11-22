@@ -16,6 +16,7 @@ var reviews = require('./routes/review');
 var favorites = require('./routes/favorite');
 var categories = require('./routes/category');
 var customers = require('./routes/customer');
+var messengers = require('./routes/messenger');
 
 
 var app = express();
@@ -58,6 +59,7 @@ app.use('/api/review', reviews);
 app.use('/api/favorite', favorites);
 app.use('/api/category', categories);
 app.use('/api/customer', customers);
+app.use('/api/messenger', messengers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
