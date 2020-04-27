@@ -3,9 +3,7 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema;
 
 var OrderSchema = new Schema({
-    product_id: {type: Schema.ObjectId, ref: 'Product', required: true},
-    qty: {type: Number, required: true, max: 50},
-    sub_total_price: {type: Number, required: true, max: 50},
+    order_id: {type: String, required: true},
     created_at: {type: Date},
     updated_at: {type: Date, default: Date.now}
 });
